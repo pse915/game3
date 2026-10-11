@@ -1,0 +1,26 @@
+[
+  {
+    "users": 10,
+    "writes": 150,
+    "total_seconds": 1.3250841000117362,
+    "save_p50_ms": 5.503199994564056,
+    "save_p95_ms": 377.51139991451055,
+    "isolated_complete_states": 10
+  },
+  {
+    "users": 20,
+    "writes": 300,
+    "total_seconds": 2.332089199917391,
+    "save_p50_ms": 5.86259993724525,
+    "save_p95_ms": 653.5568999825045,
+    "isolated_complete_states": 20
+  },
+  {
+    "users": 30,
+    "writes": 450,
+    "total_seconds": 3.629031899967231,
+    "save_p50_ms": 6.441100034862757,
+    "save_p95_ms": 960.7400000095367,
+    "isolated_complete_states": 30
+  }
+]

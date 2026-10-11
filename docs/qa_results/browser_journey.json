@@ -1,0 +1,40 @@
+{
+  "ended": true,
+  "decisions": [
+    "career",
+    "housing",
+    "nursery",
+    "care",
+    "labor",
+    "policy",
+    "ret_finance",
+    "ret_health",
+    "ret_leisure",
+    "ret_social"
+  ],
+  "concepts": [
+    "employment",
+    "housing",
+    "aging",
+    "low_birth",
+    "generations",
+    "education_cost",
+    "workcare",
+    "elder_care",
+    "labor",
+    "policy",
+    "ret_finance",
+    "ret_health",
+    "ret_leisure",
+    "ret_social"
+  ],
+  "community": {
+    "economy": 7,
+    "learning": 6,
+    "jobs": 6,
+    "care": 4,
+    "exchange": 7,
+    "budget": 3
+  },
+  "errors": 0
+}

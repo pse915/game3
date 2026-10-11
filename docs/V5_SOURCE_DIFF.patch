@@ -1,0 +1,574 @@
+--- a/frontend/game.js
++++ b/frontend/game.js
+@@ -13,15 +13,32 @@
+   let data=null,state=null,pos={zone:'square',x:16,y:13,dir:'down',moving:false,prevX:16,prevY:13,moveTime:0};
+   const art={};
+   for(const name of ['school_exterior','school_classroom',...Array.from({length:4},(_,i)=>'school_hall_'+(i+1)),...['science','technology','homemaking','computer','music','art','health','library','counsel','office','gym'].map(k=>'school_room_'+k),...Array.from({length:19},(_,i)=>'teacher_'+String(i).padStart(2,'0')),...['bread','cafe','closed','hall','library','factory','office','home','house','clinic','care','school','theater'].map(k=>'interior_'+k),...['bread','cafe','closed','hall','library','factory','office','home','house','clinic','care','school','theater'].map(k=>'building_'+k),...Array.from({length:6},(_,i)=>'avatar_'+i),...Array.from({length:3},(_,i)=>'tree_'+i),'donor_terrain','donor_fountain','donor_bench','donor_flowerbed','donor_lamp']){
+-    const im=new Image();im.onload=()=>{mapKey=''};im.onerror=()=>console.warn('학교 에셋 로드 실패:',name);im.src='assets/'+name+'.png';art[name]=im;
+-  }
++    art[name]=null;
++  }
++  function loadAsset(name){if(art[name]||!(name in art))return;const im=new Image();art[name]=im;im.onload=()=>{mapKey=''};im.onerror=()=>console.warn('에셋 로드 실패:',name);im.src='assets/'+name+'.png';}
++  function ensureSceneAssets(){
++    if(!data||!state)return;
++    loadAsset('avatar_'+Math.abs(LOOKS[state.appearance%6].skin*5+LOOKS[state.appearance%6].hair*7+LOOKS[state.appearance%6].outfit*11)%6);
++    if(isSchoolZone(pos.zone)){
++      const room=schoolRoom();if(!room)loadAsset('school_hall_'+schoolLevel());
++      else {const type=schoolRoomData(room)?.kind==='class'?'classroom':ROOM_ART[room]||'office';loadAsset(type==='classroom'?'school_classroom':'school_room_'+type);const teacher=data.school.teachers[room];if(teacher)loadAsset(teacher.sprite_id);}
++    }else if(pos.zone.startsWith('inside:'))loadAsset('interior_'+(pos.building?.[5]||'home'));
++    else {
++      ['donor_terrain','donor_flowerbed','donor_lamp','tree_0','tree_1','tree_2'].forEach(loadAsset);
++      if(pos.zone==='square')loadAsset('donor_fountain');
++      if(state.flags.policy==='고령자 지원')loadAsset('donor_bench');
++      for(const b of data.buildings[pos.zone]||[])loadAsset(b[5]==='school'&&b[4]==='서라벌여중'?'school_exterior':'building_'+b[5]);
++      for(const n of data.npcs.filter(n=>n.zone===pos.zone))loadAsset('avatar_'+Math.abs(n.skin*5+n.hair*7+n.outfit*11)%6);
++    }
++  }
++  let roomIndex=new Map(),signIndex=new Map();
+   let schoolGoal=null, guideEnabled=true, guideMode='basic', routeMemo={};
+   const isSchoolZone=z=>typeof z==='string'&&z.startsWith('school:');
+   const schoolRoom=()=>pos.zone.startsWith('school:room:')?pos.zone.substring('school:room:'.length):null;
+   const schoolLevel=()=>pos.zone.startsWith('school:hall:')?Number(pos.zone.split(':')[2]):
+                          Number(Object.keys(data?.school?.floors||{}).find(f=>data.school.floors[f].some(r=>r.id===schoolRoom()))||1);
+   const roomsFor=f=>data?.school?.floors[String(f)]||[];
+-  const schoolRoomData=id=>Object.values(data?.school?.floors||{}).flat().find(r=>r.id===id);
++  const schoolRoomData=id=>roomIndex.get(id);
+   let latestRevision=-1,lastRun='',pressed=new Set(),lastStep=0,modalOpen=false,audio=false,audioContext=null,
+       mapCanvas=null,mapKey='',floatingTime=0,initial=true,notice='',eventsPending=false,walkTick=0;
+   const safe = s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+@@ -32,11 +49,19 @@
+   const lc = (...parts)=>parts.filter(Boolean).join(' ');
+   function sound(note=520){if(!audio)return;try{audioContext??=new(window.AudioContext||window.webkitAudioContext)();const o=audioContext.createOscillator(),g=audioContext.createGain();o.type='square';o.frequency.setValueAtTime(note,audioContext.currentTime);o.frequency.exponentialRampToValueAtTime(note*.7,audioContext.currentTime+.09);g.gain.setValueAtTime(.04,audioContext.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+.12);o.connect(g).connect(audioContext.destination);o.start();o.stop(audioContext.currentTime+.13)}catch(e){}}
+   function zoneInfo(){return data?.zones.find(z=>z.id===pos.zone)}
+-  function readSavedPosition(){try{const p=JSON.parse(sessionStorage.getItem('sewol_location:'+state.run_id+':'+state.stage));if(p&&(data.zones.some(z=>z.id===p.zone)||isSchoolZone(p.zone)&&(!p.zone.startsWith("school:room:")||schoolRoomData(p.zone.substring(12))))&&Number.isInteger(p.x)&&Number.isInteger(p.y)&&p.x>=1&&p.x<29&&p.y>=4&&p.y<18&&!obstacle(p.zone,p.x,p.y))return p;}catch(e){}return null}
+-  function rememberPosition(){if(!state)return;try{sessionStorage.setItem('sewol_location:'+state.run_id+':'+state.stage,JSON.stringify({zone:pos.zone,x:pos.x,y:pos.y,dir:pos.dir}));}catch(e){}}
++  function readSavedPosition(){try{
++    const p=JSON.parse(sessionStorage.getItem('sewol_location:'+state.run_id+':'+state.stage));if(!p)return null;
++    const outer=data.zones.some(z=>z.id===p.zone),hall=/^school:hall:[1-4]$/.test(p.zone),room=p.zone.startsWith('school:room:')&&schoolRoomData(p.zone.substring(12));
++    if(p.zone.startsWith('inside:')){const zone=p.zone.split(':')[1];const b=(data.buildings[zone]||[]).find(b=>b[0]===p.building?.[0]&&b[1]===p.building?.[1]);if(!b)return null;p.building=b;}
++    else if(!outer&&!hall&&!room)return null;
++    if(Number.isInteger(p.x)&&Number.isInteger(p.y)&&!obstacle(p.zone,p.x,p.y))return p;
++  }catch(e){}return null;}
++  function rememberPosition(){if(!state)return;try{sessionStorage.setItem('sewol_location:'+state.run_id+':'+state.stage,JSON.stringify({zone:pos.zone,x:pos.x,y:pos.y,dir:pos.dir,...(pos.building?{building:pos.building.slice(0,2)}:{})}));}catch(e){}}
++  function walkableLanding(zone,x,y){const queue=[[x,y]],seen=new Set();for(let i=0;i<queue.length;i++){const [xx,yy]=queue[i],key=xx+':'+yy;if(xx<0||xx>=MW||yy<0||yy>=MH||seen.has(key))continue;seen.add(key);if(!obstacle(zone,xx,yy))return[xx,yy];queue.push([xx+1,yy],[xx-1,yy],[xx,yy+1],[xx,yy-1]);}return[16,13];}
+   function updateFromPython(args){
+     if(!args?.state||!args?.content)return;
+     const incoming=args.state;data=args.content;notice=args.notice||'';
++    roomIndex=new Map();signIndex=new Map();for(const rooms of Object.values(data.school?.floors||{})){const counts={};for(const r of rooms){roomIndex.set(r.id,r);signIndex.set(r.id,counts[r.wing]||0);counts[r.wing]=(counts[r.wing]||0)+1;}}
+     const firstRun=lastRun!==incoming.run_id,phaseChange=!firstRun&&state?.stage!==incoming.stage;
+     const newRev=state===null||incoming.revision!==latestRevision;
+     state=incoming;guideMode=state.guide_mode||'basic';guideEnabled=guideMode!=='free';$('guide-toggle').textContent={friendly:'↗ 친절 안내',basic:'↗ 기본 안내',free:'↗ 자유 탐험'}[guideMode];
+@@ -49,8 +74,8 @@
+     if(firstRun){showToast('서라벌여중 입구에서 학교를 탐험하거나, 마을 지도로 미래를 설계하세요.');}
+     latestRevision=incoming.revision;eventsPending=false;refreshUI();setHeight();
+   }
+-  window.addEventListener('message',e=>{if(e.data?.type==='streamlit:render')updateFromPython(e.data.args);});
+-  function emit(message){if(!state||eventsPending)return;eventsPending=true;message.nonce=typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+Math.random();post('streamlit:setComponentValue',{value:message});showToast('선택을 기록하고 있습니다…');}
++  window.addEventListener('message',e=>{if(e.source===window.parent&&e.data?.type==='streamlit:render')updateFromPython(e.data.args);});
++  function emit(message){if(!state||eventsPending)return;eventsPending=true;message.base_revision=state.revision;message.nonce=typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+Math.random();post('streamlit:setComponentValue',{value:message});showToast('선택을 기록하고 있습니다…');}
+   function showToast(s){const el=$('toast');el.textContent=s;el.classList.remove('hidden');floatingTime=performance.now()+3300;}
+   function closeModal(){modalOpen=false;$('modal-layer').classList.add('hidden');$('modal-content').replaceChildren();}
+   function showModal(title,summary,body,creator){stopAll();const modal=$('modal-layer'),root=$('modal-content');modal.classList.remove('hidden');modalOpen=true;root.innerHTML=`<div class="tag">✦ 나의 미래 다이어리 · LIFE EVENT</div><h3>${safe(title)}</h3><p>${safe(summary)}</p>${body||''}`;if(creator)creator(root);setTimeout(setHeight,50);sound(440);}
+@@ -58,18 +83,28 @@
+   function eventOpen(eventId){if(!state||!data)return false;const ev=data.events[eventId];return !!ev&&ev.stages.includes(state.stage)&&!state.decisions[eventId]&&(!state.ended||ev.free);}
+   function nearNPC(){const occupants=data.npcs.filter(n=>n.zone===pos.zone);const list=occupants.map(n=>({n,d:Math.abs(n.x-pos.x)+Math.abs(n.y-pos.y)})).filter(x=>x.d<=2).sort((a,b)=>a.d-b.d);return list[0]?.n||null}
+   function buildingByDoor(){const blocks=data.buildings[pos.zone]||[];for(const b of blocks){let dx=b[0]+Math.floor(b[2]/2),dy=b[1]+b[3]+1;if(Math.abs(dx-pos.x)+Math.abs(dy-pos.y)<=2)return b;}return null}
+-  function interact(){if(!state||modalOpen)return;
++  function interact(){if(!state||modalOpen||eventsPending)return;
+     if(isSchoolZone(pos.zone)){schoolInteract();return;}
+     if(pos.zone.startsWith('inside:')){interiorInfo();return;}
+-    const npc=nearNPC();if(npc){const ev=data.events[npc.event];if(eventOpen(npc.event)){openEvent(npc,ev);return;}const why=ev&&ev.stages.includes(state.stage)?'지난번 선택이 마을 사람들의 기억에 남아 있어요.':'지금은 다른 시기의 이야기가 기다리고 있어요.';showModal(npc.name+' · '+npc.role,why,'',r=>actions(r,[['계속 탐험',closeModal]]));return;}
++    const npc=nearNPC();if(npc){const ev=data.events[npc.event];if(eventOpen(npc.event)){openEvent(npc,ev);return;}const picked=ev?.choices[state.decisions[npc.event]?.option];const why=picked?(picked.followup||picked.text):'지금은 다른 시기의 이야기가 기다리고 있어요.';showModal(npc.name+' · '+npc.role,why,'',r=>actions(r,[['계속 탐험',closeModal]]));return;}
+     const door=buildingByDoor();if(door){enterInterior(door);return;}
+     showToast('주민 옆에서 말 걸기를 누르세요. 문 앞에서는 건물에 들어갈 수 있어요.');
+   }
+-  function openEvent(npc,ev){const buttons=Object.entries(ev.choices).map(([id,c])=>`<button data-choice="${safe(id)}"><div>${safe(c.label)}</div><div class="option-note">${safe(c.text)}</div></button>`).join('');showModal(ev.title,ev.intro,`<div class="options">${buttons}</div>`,root=>{
+-    root.querySelectorAll('[data-choice]').forEach(b=>b.addEventListener('click',()=>{emit({type:'choose',event_id:npc.event,choice_id:b.dataset.choice});closeModal();}));actions(root,[['아직 결정하지 않기',closeModal]]);
+-  });}
+-  function enterInterior(building){if(building[5]==='school'&&building[4]==='서라벌여중'){enterSchoolHall(1);return;}pos={...pos,zone:'inside:'+pos.zone,building:building,prevX:15,prevY:14,x:15,y:14,moving:false};mapKey='';refreshUI();showToast(building[4]+'에 들어왔습니다. 문 앞에서 말 걸기 = 밖으로 나가기');}
+-  function leaveInterior(){const outer=pos.zone.split(':')[1],b=pos.building||data.buildings[outer][0];pos={zone:outer,x:b[0]+Math.floor(b[2]/2),y:b[1]+b[3]+1,prevX:15,prevY:13,dir:'down',moving:false,moveTime:0};mapKey='';refreshUI();rememberPosition();}
++  function openEvent(npc,ev){
++    const heard=new Set();
++    const render=()=>{
++      const witnesses=ev.witnesses||[],complete=heard.size===witnesses.length;
++      const voices=witnesses.map((w,i)=>`<button data-voice="${i}">${heard.has(i)?'✓ ':''}${safe(w.name)}</button>`).join('');
++      const buttons=Object.entries(ev.choices).map(([id,c])=>`<button data-choice="${safe(id)}" ${complete?'':'disabled'}><div>${safe(c.label)}</div><div class="option-note">${safe(c.text)}</div></button>`).join('');
++      showModal(ev.title,ev.intro,`${witnesses.length?'<p>주민 '+witnesses.length+'명의 입장을 듣고 선택하세요 ('+heard.size+'/'+witnesses.length+').</p><div class="options">'+voices+'</div><p id="witness-text" role="status"></p>':''}<div class="options">${buttons}</div>`,root=>{
++        root.querySelectorAll('[data-voice]').forEach(b=>b.addEventListener('click',()=>{const i=Number(b.dataset.voice);heard.add(i);render();$('witness-text').textContent=witnesses[i].text;}));
++        root.querySelectorAll('[data-choice]').forEach(b=>b.addEventListener('click',()=>{emit({type:'choose',event_id:npc.event,choice_id:b.dataset.choice,observations:[...heard]});closeModal();}));
++        actions(root,[['아직 결정하지 않기',closeModal]]);
++      });
++    };render();
++  }
++  function enterInterior(building){if(building[5]==='school'&&building[4]==='서라벌여중'){enterSchoolHall(1);return;}stopAll();pos={...pos,zone:'inside:'+pos.zone,building:building,prevX:15,prevY:14,x:15,y:14,moving:false,moveTime:0};mapKey='';rememberPosition();refreshUI();showToast(building[4]+'에 들어왔습니다. 문 앞에서 말 걸기 = 밖으로 나가기');}
++  function leaveInterior(){const outer=pos.zone.split(':')[1],b=pos.building||data.buildings[outer][0];pos={zone:outer,x:b[0]+Math.floor(b[2]/2),y:b[1]+b[3]+1,prevX:b[0]+Math.floor(b[2]/2),prevY:b[1]+b[3]+1,dir:'down',moving:false,moveTime:0};mapKey='';refreshUI();rememberPosition();}
+   function interiorInfo(){if(pos.y>=16){leaveInterior();return;}
+     const objects=[{id:'notice',label:'알림판',x:8,y:10},{id:'work',label:'체험대',x:15,y:9},{id:'reflection',label:'미래 메모',x:22,y:10}];
+     const near=objects.map(o=>({...o,d:Math.abs(o.x-pos.x)+Math.abs(o.y-pos.y)})).sort((a,b)=>a.d-b.d)[0];
+@@ -101,12 +136,13 @@
+   function warp(zone){if(!data.zones.some(z=>z.id===zone))return;pos={zone,x:16,y:13,prevX:16,prevY:13,dir:'down',moving:false,moveTime:0};mapKey='';rememberPosition();refreshUI();showToast(data.zones.find(z=>z.id===zone).name+'에 도착했어요.');sound(620);}
+   function showJournal(){const arr=state.journal||[],recordCount=Object.keys(state.school_records||{}).length+Object.keys(state.building_records||{}).length,unseen=Object.entries(data.concepts).filter(([k])=>!state.concepts.includes(k)),memory=arr.slice(-12).reverse().map(j=>`<li><b>${j.age}세 · ${safe(j.title)}</b><div>${safe(j.choice)} — ${safe(j.outcome)}</div></li>`).join('');showModal('나의 생애 노트',`경험한 교과서 주제 ${state.concepts.length}/${Object.keys(data.concepts).length} · 마을 사건 ${Object.keys(state.decisions).length}개 · 학교/건물 조사 ${recordCount}개`,`<div class="two-column"><div><b>나의 선택</b><ul>${memory||'<li>아직 기록이 없어요.</li>'}</ul></div><div><b>발견한 내용</b><ul>${state.concepts.map(k=>'<li>'+safe(data.concepts[k])+'</li>').join('')||'<li>주민과 이야기해 보세요.</li>'}</ul><hr class="divider"><b>아직 찾지 못한 단서</b><p>${unseen.length}개 남았습니다. 모든 단서를 다 찾아야 엔딩을 볼 수 있는 것은 아닙니다.</p></div></div>`,r=>actions(r,[['하루 시간표 미니게임',showSchedule],['닫기',closeModal]]));}
+   function showSchedule(){const activities=['일','휴식','돌봄','여가'];let picks=[];function present(){const content=`<p>오늘 자유롭게 쓸 수 있는 시간은 <b>세 칸</b>입니다. 어떤 활동을 선택하시겠어요? 모두 필요하지만 한 번에 전부 할 수는 없습니다.</p><div class="options two-column">${activities.map(x=>`<button data-act="${x}">${x} ${picks.filter(y=>y===x).length?'✓':''}</button>`).join('')}</div><p><b>시간표: </b>${picks.length?picks.join(' → '):'아직 선택하지 않음'} (${picks.length}/3)</p>`;showModal('하루 시간 조율', '',content,r=>{r.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>{if(picks.length<3){picks.push(b.dataset.act);present()}}));actions(r,[['처음부터',()=>{picks=[];present()}],['선택 마무리',()=>{if(picks.length<3){showToast('세 칸을 채워 보세요.');return;}const omitted=activities.filter(a=>!picks.includes(a));closeModal();showModal('선택의 결과',`당신은 ${picks.join('·')}을(를) 골랐어요. 남은 ${omitted.join('·')||'활동'}에도 시간과 지원이 필요할 수 있습니다. 사람마다 중요한 것이 다릅니다.`,'<blockquote>일·가정 양립은 개인의 계획뿐 아니라 직장과 지역사회의 제도가 함께 뒷받침해야 합니다.</blockquote>',r2=>actions(r2,[['마을로',closeModal]]));}]]);});}present();}
+-  function refreshUI(){if(!state||!data)return;const zone=zoneInfo();const indoor=pos.zone.startsWith('inside:')||isSchoolZone(pos.zone);$('zone-label').innerHTML=`<span class="mini-sun">☀</span> ${safe(isSchoolZone(pos.zone)?(schoolRoom()?'서라벌여중 · '+schoolLevel()+'층 · '+schoolRoomData(schoolRoom())?.name:'서라벌여중 · '+schoolLevel()+'층 ㄱ자 복도'):(indoor?(pos.building?.[4]||'실내'):zone?.name||'마을'))}`;
++  function refreshUI(){if(!state||!data)return;ensureSceneAssets();const zone=zoneInfo();const indoor=pos.zone.startsWith('inside:')||isSchoolZone(pos.zone);$('zone-label').innerHTML=`<span class="mini-sun">☀</span> ${safe(isSchoolZone(pos.zone)?(schoolRoom()?'서라벌여중 · '+schoolLevel()+'층 · '+schoolRoomData(schoolRoom())?.name:'서라벌여중 · '+schoolLevel()+'층 ㄱ자 복도'):(indoor?(pos.building?.[4]||'실내'):zone?.name||'마을'))}`;
+     $('stage-pill').textContent='✧ '+data.stages[state.stage];$('age-pill').textContent=state.age+'세';$('stat-pill').textContent='✦ 관계 '+state.stats.bond;$('season').textContent=['봄','가을','겨울'][state.stage];$('ambient-label').textContent=['☀ 햇살 좋은 오후','❖ 계절이 깊어지는 거리','❄ 긴 시간이 흐른 마을'][state.stage];
+-    const titles=['어떤 어른이 될까?','함께 살아가는 방법','내 삶을 돌아보는 시간'];const descriptions=['일터지구의 선우, 주거지의 미라와 만나 직업·주거를 직접 선택해 보세요.','돌봄공원의 연주와 중앙광장의 하린을 만나 마을 문제와 정책을 연결해 보세요.','돌봄공원의 유진·태오, 강가의 유리, 광장의 수아에게서 노후 준비 네 분야를 경험하세요.'];
++    const titles=['어떤 어른이 될까?','함께 살아가는 방법','내 삶을 돌아보는 시간'];const descriptions=['일터지구의 선우, 주거지의 미라와 만나 직업·주거를 직접 선택해 보세요.','돌봄공원의 보람·연주, 상점가의 도준, 광장의 하린을 만나 인구 변화와 대응을 경험하세요. 지도에서 빠르게 이동할 수 있어요.','돌봄공원의 유진·태오, 강가의 유리, 광장의 수아에게서 노후 준비 네 분야를 경험하세요.'];
+     $('task-title').textContent=state.ended?'완성된 이야기, 새로운 탐험':titles[state.stage];$('task-desc').textContent=state.ended?'생애설계 카드를 완성했습니다. 이제 세대 협력·정원·축제 등 남은 사건을 자유롭게 경험해 보세요.':descriptions[state.stage];const need=data.requirements[state.stage];let done=need.filter(k=>state.decisions[k]).length;$('req-count').textContent=done+' / '+need.length+' 필수 사건';$('learn-count').textContent='학습 단서 '+state.concepts.length+'개';$('progress-bar').style.width=(100*done/need.length)+'%';const next=$('next-stage');next.disabled=done!==need.length||state.ended;next.innerHTML=state.ended?'생애설계 완성 ✦':state.stage===2?'생애설계 카드 완성 <span>✦</span>':'다음 생애로 이동하기 <span>↗</span>';
+     $('zone-subtitle').textContent=isSchoolZone(pos.zone)?'학교 안내 지도를 열어 교실·특별실로 길 안내를 받을 수 있어요.':(zone?.blurb||'조용한 실내 풍경');const icons=ZONE_SYMBOL;$('mini-map').innerHTML=data.zones.map(z=>`<button class="zone-cell ${z.id===pos.zone?'active':''}" data-zone="${z.id}"><span class="glyph">${icons[z.id]}</span>${safe(z.name)}</button>`).join('');$('mini-map').querySelectorAll('[data-zone]').forEach(b=>b.addEventListener('click',()=>warp(b.dataset.zone)));
+     $('memory-content').innerHTML=state.journal.length?state.journal.slice(-3).reverse().map(j=>`<div class="memory-line"><i>${j.age}세</i>${safe(j.choice)}</div>`).join(''):'<div class="empty-memory">첫 선택이 곧 나의 이야기가 됩니다.</div>';
++    const community=$('community-status');if(community){community.textContent=Object.entries(data.community_labels||{}).map(([k,label])=>label+' '+(state.community?.[k]??(k==='budget'?12:3))).join(' · ');}
+     $('reflect-prompt').textContent=['나는 어떤 삶을 중요하게 생각할까?','가족 친화 문화는 누가 함께 만들까?','건강·여가·재무·관계를 어떻게 준비할까?'][state.stage];
+   }
+   function obstacle(zone,x,y){if(x<0||x>=MW||y<0||y>=MH)return true;if(isSchoolZone(zone)){if(zone.startsWith('school:hall:'))return !((x>=6&&x<=8&&y>=8&&y<=17)||(x>=7&&x<=27&&y>=8&&y<=10));return x<1||x>28||y<4||y>17;}if(zone.startsWith('inside:'))return y<3||y>=18||x<2||x>=28;
+@@ -118,18 +154,26 @@
+   function tryMove(dx,dy,now){if(modalOpen||!state)return;const toX=pos.x+dx,toY=pos.y+dy;pos.dir=dx>0?'right':dx<0?'left':dy>0?'down':'up';
+     if(isSchoolZone(pos.zone)){if(schoolRoom()&&toY>=18){if(pos.x>=13&&pos.x<=17)leaveSchoolRoom();return;}if(obstacle(pos.zone,toX,toY))return;}
+     else if(pos.zone.startsWith('inside:')){if(toY>=18){leaveInterior();return;}if(obstacle(pos.zone,toX,toY))return;}
+-    else if(toX<0||toX>=MW||toY<0||toY>=MH){const here=data.zones.find(z=>z.id===pos.zone);const next=data.zones.find(z=>z.col===here.col+(toX<0?-1:toX>=MW?1:0)&&z.row===here.row+(toY<0?-1:toY>=MH?1:0));if(next){pos.zone=next.id;pos.x=toX<0?29:toX>=MW?0:Math.max(1,Math.min(28,pos.x));pos.y=toY<0?18:toY>=MH?0:Math.max(9,Math.min(16,pos.y));pos.prevX=pos.x;pos.prevY=pos.y;mapKey='';refreshUI();rememberPosition();sound(420);}return;}
++    else if(toX<0||toX>=MW||toY<0||toY>=MH){const here=data.zones.find(z=>z.id===pos.zone);const next=data.zones.find(z=>z.col===here.col+(toX<0?-1:toX>=MW?1:0)&&z.row===here.row+(toY<0?-1:toY>=MH?1:0));if(next){pos.zone=next.id;pos.x=toX<0?29:toX>=MW?0:Math.max(1,Math.min(28,pos.x));pos.y=toY<0?18:toY>=MH?0:Math.max(9,Math.min(16,pos.y));[pos.x,pos.y]=walkableLanding(pos.zone,pos.x,pos.y);pos.prevX=pos.x;pos.prevY=pos.y;pos.moveTime=now;pos.moving=false;mapKey='';refreshUI();rememberPosition();sound(420);}return;}
+     else if(obstacle(pos.zone,toX,toY))return;
+     pos.prevX=pos.x;pos.prevY=pos.y;pos.x=toX;pos.y=toY;pos.moveTime=now;pos.moving=true;walkTick++;if(walkTick%6===0)rememberPosition();
+     if(pos.zone.startsWith('inside:')&&pos.y>=16)showToast('한 칸 더 내려가면 건물 밖으로 나갑니다.');
+   }
+-  function updateMovement(now){if(now-lastStep<145||modalOpen||!state)return;let dx=0,dy=0;if(pressed.has('left'))dx=-1;else if(pressed.has('right'))dx=1;else if(pressed.has('up'))dy=-1;else if(pressed.has('down'))dy=1;if(dx||dy){tryMove(dx,dy,now);lastStep=now}}
++  function updateMovement(now){
++    if(pos.moving&&now-pos.moveTime>=145)pos.moving=false;
++    if(modalOpen||!state)return;let dx=0,dy=0;
++    if(pressed.has('left'))dx=-1;else if(pressed.has('right'))dx=1;else if(pressed.has('up'))dy=-1;else if(pressed.has('down'))dy=1;
++    if(!dx&&!dy){lastStep=now-145;return;}
++    lastStep=Math.max(lastStep,now-290);
++    while(now-lastStep>=145){lastStep+=145;tryMove(dx,dy,lastStep);if(modalOpen)break;}
++  }
++  function pressDirection(dir){if(!pressed.size)lastStep=performance.now()-145;pressed.add(dir);updateMovement(performance.now());}
+   const keyToDirection={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right',W:'up',S:'down',A:'left',D:'right'};
+-  window.addEventListener('keydown',e=>{if(e.target.tagName==='TEXTAREA'||e.target.tagName==='INPUT')return;const dir=keyToDirection[e.key];if(dir){e.preventDefault();pressed.add(dir);}else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(modalOpen)return;interact();}else if(e.key.toLowerCase()==='m'){e.preventDefault();showMap();}else if(e.key.toLowerCase()==='j'){e.preventDefault();showJournal();}else if(e.key==='Escape'&&modalOpen)closeModal();});
+-  window.addEventListener('keyup',e=>{const dir=keyToDirection[e.key];if(dir){pressed.delete(dir);e.preventDefault()}});
+-  function stopAll(){pressed.clear();document.querySelectorAll('.dpad button').forEach(b=>b.classList.remove('pressed'))}
++  window.addEventListener('keydown',e=>{if(e.target.tagName==='TEXTAREA'||e.target.tagName==='INPUT')return;const dir=keyToDirection[e.key];if(dir){e.preventDefault();if(!e.repeat)pressDirection(dir);}else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(modalOpen)return;interact();}else if(e.key.toLowerCase()==='m'){e.preventDefault();showMap();}else if(e.key.toLowerCase()==='j'){e.preventDefault();showJournal();}else if(e.key==='Escape'&&modalOpen)closeModal();});
++  window.addEventListener('keyup',e=>{const dir=keyToDirection[e.key];if(dir){pressed.delete(dir);rememberPosition();e.preventDefault()}});
++  function stopAll(){pressed.clear();rememberPosition();document.querySelectorAll('.dpad button').forEach(b=>b.classList.remove('pressed'))}
+   window.addEventListener('blur',stopAll);window.addEventListener('orientationchange',stopAll);document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAll()});
+-  document.querySelectorAll('[data-dir]').forEach(el=>{const dir=el.dataset.dir;el.addEventListener('pointerdown',e=>{e.preventDefault();el.setPointerCapture?.(e.pointerId);pressed.add(dir);el.classList.add('pressed');canvas.focus()});const stop=e=>{pressed.delete(dir);el.classList.remove('pressed');e.preventDefault()};['pointerup','pointercancel','lostpointercapture'].forEach(event=>el.addEventListener(event,stop));});
++  document.querySelectorAll('[data-dir]').forEach(el=>{const dir=el.dataset.dir;el.addEventListener('pointerdown',e=>{e.preventDefault();el.setPointerCapture?.(e.pointerId);pressDirection(dir);el.classList.add('pressed');canvas.focus()});const stop=e=>{pressed.delete(dir);rememberPosition();el.classList.remove('pressed');e.preventDefault()};['pointerup','pointercancel','lostpointercapture'].forEach(event=>el.addEventListener(event,stop));});
+   $('guide-toggle').addEventListener('click',()=>{const next={friendly:'basic',basic:'free',free:'friendly'}[guideMode];emit({type:'guide_setting',mode:next});guideMode=next;guideEnabled=next!=='free';$('guide-toggle').textContent={friendly:'↗ 친절 안내',basic:'↗ 기본 안내',free:'↗ 자유 탐험'}[next];});$('touch-talk').addEventListener('click',interact);$('touch-map').addEventListener('click',showMap);$('map-open').addEventListener('click',showMap);$('journal-open').addEventListener('click',showJournal);$('next-stage').addEventListener('click',promptStage);$('audio-toggle').addEventListener('click',()=>{audio=!audio;$('audio-toggle').textContent=audio?'♪ 켜짐':'♪ 꺼짐';if(audio)sound(510)});
+   // --------- Migrated 3-3game pixel atlas renderer; game2 map and hitboxes retained. -------
+   const palette={grass:['#83aa7a','#7ca473','#88af7d','#71996f'],amber:['#bca773','#b6a06d','#c5ad7a','#b8a16c'],stone:['#99aaa0','#92a59c','#a6b6ac','#8c9d95'],green:['#7fba92','#84b69a','#90c39b','#7fb08a'],river:['#91b59b','#8eb6a2','#95baaa','#8aab9c']};
+@@ -178,11 +222,14 @@
+     if(z==='welfare'&&state.flags.policy==='고령자 지원'&&imgReady('donor_bench')){for(const [x,y] of [[4,15],[22,15]])c.drawImage(art.donor_bench,x*TILE-20,y*TILE-31,83,63);}
+     if(z==='shop'&&state.flags.policy==='세대 협력'){for(let x=4;x<27;x+=4)drawFlowerbed(c,x,8);}
+     (data.buildings[z]||[]).forEach(b=>drawBuilding(c,b,z));
++    const changes=state.world_changes||[];
++    const zoneFor={nursery:'welfare',care:'welfare',labor:'shop',policy:'square'};
++    changes.filter(change=>zoneFor[change.event]===z).forEach((change,i)=>{const x=38,y=467+i*30;rect(c,x,y,370,26,'#264953ef');c.textAlign='left';c.textBaseline='middle';c.font='bold 13px sans-serif';c.fillStyle='#fff1cf';c.fillText('✦ '+change.visual+(change.later_ready?' · 후속 변화 확인':' · 시범 운영'),x+10,y+13,350);});
+     // Ground-level shadows below props
+     for(let x=0;x<MW;x++)if((x+z.length)%9===0){rect(c,x*TILE+4,17*TILE+12,14,2,'#638f76')}
+   }
+   function drawBuilding(c,b,z){const [x,y,w,h,name,type]=b,X=x*TILE,Y=y*TILE,WW=w*TILE,HH=h*TILE,doorX=X+Math.floor(w/2)*TILE;
+-    if(type==='school'&&art.school_exterior.complete&&art.school_exterior.naturalWidth){c.drawImage(art.school_exterior,X,Y,WW,HH);c.font='bold 13px sans-serif';c.textAlign='center';c.textBaseline='middle';rect(c,X+WW*.25,Y+13,WW*.5,23,'#3d5f59');c.fillStyle='#f8e9c7';c.fillText('서라벌여중',X+WW/2,Y+27);return;}
++    if(type==='school'&&name==='서라벌여중'&&imgReady('school_exterior')){c.drawImage(art.school_exterior,X,Y,WW,HH);c.font='bold 13px sans-serif';c.textAlign='center';c.textBaseline='middle';rect(c,X+WW*.25,Y+13,WW*.5,23,'#3d5f59');c.fillStyle='#f8e9c7';c.fillText('서라벌여중',X+WW/2,Y+27);return;}
+     if(imgReady('building_'+type)){c.drawImage(art['building_'+type],X-3,Y-3,WW+6,HH+6);const signW=Math.min(WW-24,150);rect(c,X+(WW-signW)/2,Y+HH*.34,signW,21,'#35525add');c.font='bold 12px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#f9edcf';const buildingLabel=type==='closed'&&state.flags.policy==='청년 지원'?'청년 공유공간':type==='closed'&&state.stage>=1?'임대 문의':name;c.fillText(buildingLabel,X+WW/2,Y+HH*.34+11,signW-6);return;}
+    
+     let roof={'school':'#b97760','hall':'#508777','clinic':'#7b9daf','cafe':'#ca8662','theater':'#986c8e','closed':'#757d7c','factory':'#7e8da1','office':'#8b9288','library':'#847fa3','care':'#8f9fb8','house':'#c49076','home':'#b78973','bread':'#cf9d63'}[type]||'#a98270';
+@@ -260,8 +307,9 @@
+     });
+   }
+   function imgReady(name){return art[name]?.complete&&art[name]?.naturalWidth>0}
++  const ROOM_ART={health:'health',gym:'gym',technology:'technology',homemaking:'homemaking',computer:'computer',music:'music',music2:'music',music_staff:'music',art:'art',art_staff:'art',counsel:'counsel',career:'counsel',korean_library:'library',science1:'science',science2:'science',science3:'science',science_staff:'science',broadcast:'computer',student_space:'counsel',resources:'library',staff:'office',admin_archive:'office',office:'office',principal:'office',year1_office:'office',year2_office:'office',year3_office:'office',teacher_center:'office',it_staff:'computer',math_support:'office',self_learning:'library',english:'classroom',multi:'gym'};
+   function drawSchool(c,now){const floor=schoolLevel(),room=schoolRoom();
+-    const specialType=room?({health:'health',gym:'gym',technology:'technology',homemaking:'homemaking',computer:'computer',music:'music',music2:'music',music_staff:'music',art:'art',art_staff:'art',counsel:'counsel',career:'counsel',korean_library:'library',science1:'science',science2:'science',science3:'science',science_staff:'science',broadcast:'computer',student_space:'counsel',resources:'library',staff:'office',admin_archive:'office',office:'office',principal:'office',year1_office:'office',year2_office:'office',year3_office:'office',teacher_center:'office',it_staff:'computer',math_support:'office',self_learning:'library',english:'classroom',multi:'gym'})[room]||'office':null;
++    const specialType=room?(ROOM_ART[room]||'office'):null;
+     const asset=room?(schoolRoomData(room)?.kind==='class'?'school_classroom':specialType==='classroom'?'school_classroom':'school_room_'+specialType):'school_hall_'+floor;
+     if(imgReady(asset))c.drawImage(art[asset],0,0,W,H);else rect(c,0,0,W,H,room?'#eadac4':'#485f62');
+     if(!room){
+@@ -270,7 +318,7 @@
+       // north signs alternate staggered rows at 64px spacing, with a larger proximity hint.
+       rooms.forEach((r,i)=>{
+         const at=r.door,dist=schoolDist(at,[pos.x,pos.y]),north=r.wing==='north';
+-        const localIndex=rooms.filter(x=>x.wing===r.wing).findIndex(x=>x.id===r.id);
++        const localIndex=signIndex.get(r.id)||0;
+         const px=north?at[0]*TILE+16:87,py=north?(localIndex%2?233:205):at[1]*TILE+16;
+         const label=r.name,wrap=Array.from(label),cut=wrap.length>9?Math.ceil(wrap.length/2):0;
+         const lines=cut?[wrap.slice(0,cut).join(''),wrap.slice(cut).join('')]:[label];
+@@ -315,7 +363,7 @@
+       c.textAlign='center';c.fillStyle='#f7edcf';c.font='bold 14px sans-serif';rect(c,371,565,216,28,'#3d615ddd');c.fillText('↓ 출입문으로 나가기',W/2,585);
+     }
+     const ratio=Math.min(1,(now-pos.moveTime)/145),smooth=ratio*ratio*(3-2*ratio),xx=(pos.prevX+(pos.x-pos.prevX)*smooth)*TILE+16,yy=(pos.prevY+(pos.y-pos.prevY)*smooth)*TILE+32;
+-    drawPerson(c,LOOKS[state.appearance%6],xx,yy,pos.dir,Math.floor(now/200)%4,state.stage===2);
++    drawPerson(c,LOOKS[state.appearance%6],xx,yy,pos.dir,pos.moving?Math.floor(now/200)%4:0,state.stage===2);
+     if(guideEnabled)drawSchoolGuidance(c,now);
+   }
+   function schoolGuidePoint(){if(!schoolGoal)return null;
+@@ -331,7 +379,7 @@
+     if(guideMode==='friendly'&&routeMemo.route){for(const [x,y] of routeMemo.route.slice(0,25))rect(c,x*TILE+13,y*TILE+14,7,6,'#f1d48edd');}
+   }
+   function drawWayfinding(c,gx,gy,label,now){const x=pos.x*TILE+16,y=pos.y*TILE+7,tx=gx*TILE+16,ty=gy*TILE+9;
+-    if(Math.abs(pos.x-gx)+Math.abs(pos.y-gy)<2)return;
++    if(Math.abs(pos.x-gx)+Math.abs(pos.y-gy)===0)return;
+     const angle=Math.atan2(ty-y,tx-x),a=x+Math.cos(angle)*45,b=y+Math.sin(angle)*45+Math.sin(now/300)*3;
+     c.save();c.translate(a,b);c.rotate(angle);c.fillStyle='#ffdea1';c.strokeStyle='#4b6265';c.lineWidth=3;c.beginPath();c.moveTo(19,0);c.lineTo(-4,-12);c.lineTo(-4,-5);c.lineTo(-19,-5);c.lineTo(-19,5);c.lineTo(-4,5);c.lineTo(-4,12);c.closePath();c.stroke();c.fill();c.restore();
+     c.font='bold 14px sans-serif';c.textAlign='center';rect(c,310,10,340,28,'#304d53cf');c.fillStyle='#fff1cf';c.fillText('↗ '+label,W/2,29);
+@@ -376,23 +424,23 @@
+     });
+     rect(c,248,19,464,47,'#38575fe8');c.textAlign='center';c.textBaseline='middle';c.fillStyle='#fff1cf';c.font='bold 25px sans-serif';c.fillText(b[4]||'마을 시설',W/2,44);
+     rect(c,334,553,294,35,'#38575fcc');c.font='bold 15px sans-serif';c.fillText('↓ 아래 출입구로 나가세요',W/2,574);
+-    drawPerson(c,LOOKS[state.appearance%6],pos.x*TILE+16,pos.y*TILE+28,pos.dir,Math.floor(performance.now()/190)%4,state.stage===2);
+-  }
+-  function cachedLayer(now){const key=pos.zone+'-'+state.stage+'-'+(state.flags.policy||'none');if(mapKey!==key){mapKey=key;mapCanvas=document.createElement('canvas');mapCanvas.width=W;mapCanvas.height=H;const cc=mapCanvas.getContext('2d');cc.imageSmoothingEnabled=false;drawDecor(cc,pos.zone,now);}}
++    const now=performance.now(),ratio=Math.min(1,(now-pos.moveTime)/145),smooth=ratio*ratio*(3-2*ratio);drawPerson(c,LOOKS[state.appearance%6],(pos.prevX+(pos.x-pos.prevX)*smooth)*TILE+16,(pos.prevY+(pos.y-pos.prevY)*smooth)*TILE+28,pos.dir,pos.moving?Math.floor(now/190)%4:0,state.stage===2);
++  }
++  function cachedLayer(now){const key=pos.zone+'-'+state.stage+'-'+(state.flags.policy||'none')+'-'+state.revision;if(mapKey!==key){mapKey=key;mapCanvas=document.createElement('canvas');mapCanvas.width=W;mapCanvas.height=H;const cc=mapCanvas.getContext('2d');cc.imageSmoothingEnabled=false;drawDecor(cc,pos.zone,now);}}
+   function draw(now){ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,W,H);if(!state){rect(ctx,0,0,W,H,'#487666');ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 36px sans-serif';ctx.fillStyle='#ffeed0';ctx.fillText('🌅 세월항 — 내일을 잇는 마을',W/2,H/2);return;}
+     if(isSchoolZone(pos.zone)){drawSchool(ctx,now);return;}
+     if(pos.zone.startsWith('inside:')){drawInside(ctx);return}
+     cachedLayer(now);ctx.drawImage(mapCanvas,0,0);const npcList=data.npcs.filter(n=>n.zone===pos.zone);const current=Math.floor(now/350)%4;
+     const actors=npcList.map(n=>({kind:'npc',y:n.y,x:n.x,who:n}));actors.push({kind:'player',x:pos.x,y:pos.y});actors.sort((a,b)=>a.y-b.y);
+     actors.forEach(a=>{if(a.kind==='npc'){const n=a.who,shift=Math.sin(now/1000+n.x+n.y)*1.2;drawPerson(ctx,n,n.x*TILE+16,n.y*TILE+32+shift,'down',current,state.stage===2&&['grand','bank'].includes(n.id));nameLabel(ctx,n.x*TILE+16,n.y*TILE+32+shift,n.name,eventOpen(n.event));}
+-      else{const ratio=Math.min(1,(now-pos.moveTime)/145),smooth=ratio*ratio*(3-2*ratio),dx=pos.prevX+(pos.x-pos.prevX)*smooth,dy=pos.prevY+(pos.y-pos.prevY)*smooth;drawPerson(ctx,LOOKS[state.appearance%6],dx*TILE+16,dy*TILE+32,pos.dir,Math.floor(now/170)%4,state.stage===2);rect(ctx,dx*TILE+9,dy*TILE-25,14,2,'#f4e6b0');}
++      else{const ratio=Math.min(1,(now-pos.moveTime)/145),smooth=ratio*ratio*(3-2*ratio),dx=pos.prevX+(pos.x-pos.prevX)*smooth,dy=pos.prevY+(pos.y-pos.prevY)*smooth;drawPerson(ctx,LOOKS[state.appearance%6],dx*TILE+16,dy*TILE+32,pos.dir,pos.moving?Math.floor(now/170)%4:0,state.stage===2);rect(ctx,dx*TILE+9,dy*TILE-25,14,2,'#f4e6b0');}
+     });
+     // Zone changes use a vignette, while leaving the pixels crisp.
+     rect(ctx,0,0,W,5,'#213d4880');rect(ctx,0,H-5,W,5,'#213d4880');
+     if(!modalOpen&&guideEnabled)drawGuidance(ctx);
+     if(modalOpen)return;const neighbor=nearNPC();if(neighbor){rect(ctx,355,H-67,250,32,'#203b42d9');ctx.fillStyle='#f8edc9';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.fillText('✦ '+neighbor.name+' · 말 걸기',W/2,H-46)}else if(buildingByDoor()){rect(ctx,370,H-67,220,32,'#203b42d9');ctx.fillStyle='#f8edc9';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.fillText('⌂ 건물 안으로',W/2,H-46)}
+   }
+-  function loop(now){updateMovement(now);draw(now);if(floatingTime&&now>floatingTime){$('toast').classList.add('hidden');floatingTime=0;}requestAnimationFrame(loop)}
++  function loop(now){if(document.hidden){requestAnimationFrame(loop);return;}updateMovement(now);draw(now);if(floatingTime&&now>floatingTime){$('toast').classList.add('hidden');floatingTime=0;}requestAnimationFrame(loop)}
+   requestAnimationFrame(loop);
+   // Direct static-page opening shows an honest preview (no fake progress/save mode).
+   setTimeout(()=>{if(!state&&!window.frameElement){showToast('플레이하려면 상위 폴더에서 streamlit run app.py 를 실행하세요.')};setHeight()},600);
+--- a/content.py
++++ b/content.py
+@@ -4,8 +4,8 @@
+ 
+ STAGES = ["청년기", "성인기", "노년기"]
+ CONCEPTS = {
+-    "low_birth": "저출산: 출생아 수 감소와 출산율 저하",
+-    "aging": "고령화: 평균 수명 상승과 노인 인구 비율 증가",
++    "low_birth": "저출산: 출산율이 낮은 현상. 출생아 수는 출산율과 부모가 될 연령대의 인구 규모 등에 영향을 받음",
++    "aging": "고령화: 전체 인구 중 고령인구 비중 증가. 수명 연장과 낮은 출산율 등이 연결됨",
+     "employment": "소득·고용 불안정과 청년 일자리",
+     "housing": "청년 주거 지원과 생활비 부담",
+     "values": "결혼·출산에 관한 가치관 변화와 다양한 삶",
+@@ -130,7 +130,7 @@
+ }
+ 
+ # Stage requirements, rather than forcing one NPC visitation order.
+-REQUIRED = {0:["career","housing"],1:["care","policy"],2:["ret_finance","ret_health","ret_leisure","ret_social"]}
++REQUIRED = {0:["career","housing"],1:["nursery","care","labor","policy"],2:["ret_finance","ret_health","ret_leisure","ret_social"]}
+ 
+ ZONES = [
+     {"id":"shop", "name":"노을 상점가", "col":0,"row":0,"theme":"amber", "blurb":"일자리를 찾는 간판과 장터의 온기가 공존한다."},
+@@ -150,7 +150,13 @@
+  "river":[[3,3,7,5,"강변 극장","theater"],[14,3,7,5,"목공방","factory"],[24,3,4,5,"쉼터","home"]],
+ }
+ 
+-def public_content():
++from education import enrich, LABELS
++enrich(EVENTS)
++
++def public_content(state=None):
+     from school import school_content
++    from education import requirements_for
++    requirements = {k:list(v) for k,v in REQUIRED.items()}
++    if state is not None: requirements[state['stage']] = requirements_for(state)
+     return {"stages": STAGES, "concepts": CONCEPTS, "npcs": NPCS,
+-            "events": EVENTS, "requirements": REQUIRED, "zones": ZONES, "buildings": BUILDINGS, "school": school_content()}
++            "events": EVENTS, "requirements": requirements, "zones": ZONES, "buildings": BUILDINGS, "school": school_content(), "community_labels":LABELS}
+--- a/engine.py
++++ b/engine.py
+@@ -7,12 +7,13 @@
+ import uuid
+ from content import EVENTS, REQUIRED, CONCEPTS, STAGES, BUILDINGS
+ from school import validate_school_interaction, concept_for, TEACHER_MAP, SPECIAL, OBJECT_LABELS
++from education import migrate, requirements_for, community_for, world_changes
+ 
+ SCHEMA = 1
+ LIMITS = {"money":(-6,16), "time":(-6,16), "energy":(-6,16), "bond":(-6,16), "insight":(0,40)}
+ 
+ def new_state(class_code: str, student_id: str, nickname: str, appearance: int = 0) -> dict:
+-    return {"schema":SCHEMA, "run_id":uuid.uuid4().hex, "revision":0,
++    return {"schema":SCHEMA, "content_version":5, "community":community_for({}), "world_changes":[], "run_id":uuid.uuid4().hex, "revision":0,
+             "class_code":class_code,"student_id":student_id,"nickname":nickname,
+             "appearance":int(appearance)%6, "stage":0,"age":19,"zone":"square",
+             "x":7,"y":9,"flags":{},"decisions":{},"concepts":[],
+@@ -21,10 +22,10 @@
+             "started_at":datetime.now(timezone.utc).isoformat(),"last_update":datetime.now(timezone.utc).isoformat()}
+ 
+ def completed(state:dict)->list[str]:
+-    return [name for name in REQUIRED[state['stage']] if name in state['decisions']]
++    return [name for name in requirements_for(state) if name in state['decisions']]
+ 
+ def ready(state:dict)->bool:
+-    return all(name in state['decisions'] for name in REQUIRED[state['stage']])
++    return all(name in state['decisions'] for name in requirements_for(state))
+ 
+ def learning_coverage(state:dict)->dict[str,bool]:
+     seen = set(state.get("concepts",[]))
+@@ -39,7 +40,8 @@
+             "retirement":ret,"decisions":len(decisions),"learned":len(state['concepts']),
+             "covered":learning_coverage(state),"life":STAGES[state['stage']],
+             "message": "한 가지 선택으로 인생이 결정되지 않아요. 개인의 노력과 사회의 지원이 함께 삶을 바꿉니다.",
+-            "reflection_questions": ["내가 가장 중요하게 여긴 가치는 무엇인가?", "주민의 어려움과 저출산·고령화는 어떻게 연결되는가?", "사회와 나는 앞으로 무엇을 준비할 수 있을까?"]}
++            "community":community_for(state), "world_changes":world_changes(state),
++            "reflection_questions": ["저출산 또는 고령화의 영향을 가장 크게 느낀 사건은 무엇인가?", "내가 선택한 대응은 마을에 어떤 변화와 남은 과제를 만들었는가?", "이런 사회에서 나의 미래를 위해 어떤 준비를 하고 싶은가?"]}
+ 
+ def apply(state:dict, message:dict) -> tuple[dict,str]:
+     """Return cloned state + user-facing feedback. Unknown/malformed events never mutate."""
+@@ -48,10 +50,13 @@
+     nonce = str(message.get('nonce',''))
+     if not nonce or len(nonce)>100:return result,"저장 요청 식별자가 없습니다."
+     if nonce in result.get('nonces',[]):return result,"이미 반영된 선택입니다."
++    if 'base_revision' in message and message['base_revision']!=result['revision']:
++        return result,"화면의 기록이 오래되었습니다. 최신 기록을 확인한 뒤 다시 선택하세요."
+     kind=message.get('type')
+     feedback=""
+     if kind=='choose':
+         key=message.get('event_id'); option=message.get('choice_id')
++        if not isinstance(key,str) or not isinstance(option,str):return result,"유효하지 않은 선택입니다."
+         event=EVENTS.get(key)
+         if not event or option not in event['choices']:
+             return result,"유효하지 않은 선택입니다."
+@@ -64,7 +69,10 @@
+             lo,hi=LIMITS[attr]
+             result['stats'][attr]=max(lo,min(hi,result['stats'][attr]+delta))
+         result['flags'].update(data['flags'])
+-        result['decisions'][key]={"option":option,"stage":result['stage'],"label":data['label']}
++        observations=message.get('observations',[])
++        if not isinstance(observations,list):observations=[]
++        result['decisions'][key]={"option":option,"stage":result['stage'],"label":data['label'],
++                                  "observations":list(dict.fromkeys(i for i in observations if type(i) is int and 0<=i<len(event.get('witnesses',[]))))}
+         result['concepts']=list(dict.fromkeys(result['concepts']+data['concepts']))
+         result['journal'].append({"age":result['age'],"event":key,"title":event['title'],"choice":data['label'],"outcome":data['text']})
+         feedback=data['text']
+@@ -121,6 +129,7 @@
+             result['concepts']=list(dict.fromkeys(result['concepts']+["aging","low_birth"]))
+         feedback=f"{STAGES[result['stage']]}에 도착했습니다. 마을과 주민의 변화에 주목해 보세요."
+     elif kind=='finish':
++        if result['ended']:return result,"이미 생애설계를 정리했습니다."
+         if result['stage']!=2 or not ready(result):
+             return result,"노후 준비 네 가지 영역을 모두 경험해야 생애설계 카드를 완성할 수 있습니다."
+         result['ended']=True
+@@ -132,6 +141,7 @@
+         feedback="소감이 저장되었습니다."
+     else:
+         return result,"지원하지 않는 요청입니다."
++    result=migrate(result)
+     result['revision']+=1
+     result['nonces']=(result.get('nonces',[])+[nonce])[-100:]
+     result['last_update']=datetime.now(timezone.utc).isoformat()
+--- a/app.py
++++ b/app.py
+@@ -1,5 +1,6 @@
+ """Streamlit host: authentication, durable snapshots and teacher dashboard."""
+ from __future__ import annotations
++import html
+ import csv, hashlib, hmac, io, json, os, re, secrets
+ from datetime import datetime, timezone
+ from pathlib import Path
+@@ -7,6 +8,7 @@
+ import streamlit.components.v1 as components
+ from content import public_content, REQUIRED, CONCEPTS
+ from engine import SCHEMA, new_state, apply, recap, ready
++from education import migrate, requirements_for
+ from storage import make_store, StorageError
+ 
+ st.set_page_config(page_title='서라벌여중 | 나의 미래 다이어리',page_icon='🌅',layout='wide',initial_sidebar_state='collapsed')
+@@ -77,22 +79,23 @@
+     if old and not valid_pin(pin,old.get('auth',{})):
+         st.error('기존 학생번호의 암호가 일치하지 않습니다. 다른 기록에 접근할 수 없습니다.');return
+     if old and not restart:
+-        state=old
++        state=migrate(old)
+     else:
+         state=new_state(cls,sid,nick or '여행자',looks-1)
+         state['auth']=digest_pin(pin)
+         try:store.save(state)
+-        except Exception as exc:st.warning(f'첫 저장이 실패했습니다: {exc}. JSON 백업을 사용하세요.')
++        except Exception as exc:st.session_state['save_error']=str(exc)
+     st.session_state['world_state']=state
+     st.rerun()
+ 
+ def world():
+-    state=st.session_state['world_state']
+-    st.markdown(f"<span style='font-size:1.35rem;font-weight:800'>📔 서라벌여중 <span style='color:#9bcfc0;font-size:.85rem'>내일을 잇는 마을 · {state['nickname']}의 이야기</span></span>",unsafe_allow_html=True)
++    state=migrate(st.session_state['world_state'])
++    st.session_state['world_state']=state
++    st.markdown(f"<span style='font-size:1.35rem;font-weight:800'>📔 서라벌여중 <span style='color:#9bcfc0;font-size:.85rem'>내일을 잇는 마을 · {html.escape(state['nickname'])}의 이야기</span></span>",unsafe_allow_html=True)
+     with st.sidebar:
+         st.subheader('나의 생애 일지')
+         st.write(f"**{state['age']}세 · {['청년기','성인기','노년기'][state['stage']]}**")
+-        st.write(f"필수 사건: {sum(k in state['decisions'] for k in REQUIRED[state['stage']])}/{len(REQUIRED[state['stage']])}")
++        st.write(f"필수 사건: {sum(k in state['decisions'] for k in requirements_for(state))}/{len(requirements_for(state))}")
+         st.write(f"경험한 학습 주제: {len(state['concepts'])}/{len(CONCEPTS)}")
+         st.caption('지도에서 구역을 터치하면 빠른 이동이 됩니다. 사건 선택 후 저장되며, 이동만으로 저장 요청하지 않습니다.')
+         st.markdown('---')
+@@ -110,17 +113,20 @@
+                         raise ValueError('현재 저장본보다 오래된 버전입니다.')
+                     if data.get('auth')!=state.get('auth'):
+                         raise ValueError('인증 정보가 일치하지 않습니다.')
++                    data=migrate(data)
++                    store.save(data)
+                     st.session_state['world_state']=data
+-                    store.save(data)
+                     st.rerun()
+                 except Exception as exc:st.error(f'복원 거부: {exc}')
+         if st.button('다른 학생 입장'):
+-            del st.session_state['world_state']
++            for key in ('world_state','notice','save_error','last_message_nonce'):
++                st.session_state.pop(key,None)
+             st.rerun()
+     # Nonce-based handling avoids duplicate Streamlit iframe message replays.
+-    result=component(state={k:v for k,v in state.items() if k!='auth'},content=public_content(),
++    result=component(state={k:v for k,v in state.items() if k!='auth'},content=public_content(state),
+                      notice=st.session_state.get('notice',''),key='sewol_game',default=None)
+-    if isinstance(result,dict) and result.get('nonce'):
++    if isinstance(result,dict) and result.get('nonce') and result['nonce']!=st.session_state.get('last_message_nonce'):
++        st.session_state['last_message_nonce']=result['nonce']
+         revised,feedback=apply(state,result)
+         if revised['revision']!=state['revision']:
+             st.session_state['world_state']=revised
+@@ -131,8 +137,17 @@
+             except Exception as exc:
+                 st.session_state['save_error']=str(exc)
+             st.rerun()
++        else:
++            st.session_state['notice']=feedback
++            st.rerun()
+     if st.session_state.get('save_error'):
+         st.error('서버 저장이 실패했습니다. 왼쪽의 JSON 내려받기로 백업하세요. '+st.session_state['save_error'])
++        if st.button('현재 기록 저장 다시 시도'):
++            try:
++                store.save(state)
++                st.session_state.pop('save_error',None)
++                st.rerun()
++            except Exception as exc: st.session_state['save_error']=str(exc)
+     if state['ended']:
+         st.markdown('### 생애설계 기록 · 학생용 소감문')
+         info=recap(state)
+@@ -140,17 +155,22 @@
+         with l:
+             st.write('**내가 선택한 생활**')
+             st.write(f"직업: {info['career']} · 주거: {info['housing']} · 정책: {info['policy']}")
+-            st.write(f"노후 준비: {', '.join(x.removeprefix('ret_') for x in info['retirement'])}")
+-        with r:st.write('**돌아보기**: '+info['message'])
++            st.write(f"노후 준비: {', '.join(info['retirement'].values())}")
++        with r:
++            st.write('**돌아보기**: '+info['message'])
++            for change in info['world_changes']:
++                st.write('**'+change['choice']+'**: '+change['outcome'])
++                st.caption(change['followup'])
+         st.caption('이 기록은 좋은 삶·나쁜 삶을 나누는 성적표가 아닙니다.')
+         with st.form('reflection-form'):
+-            reflection=st.text_area('소감문 — 무엇을 중요하게 생각했고, 이제 무엇을 준비할까?',value=state.get('reflection',''),height=115)
++            for question in info['reflection_questions']: st.write(question)
++            reflection=st.text_area('세 질문에 대한 나의 소감문',value=state.get('reflection',''),height=115)
+             save_ref=st.form_submit_button('소감 저장',type='primary')
+         if save_ref:
+             revised,_=apply(state,{'type':'reflection','text':reflection,'nonce':secrets.token_hex(12)})
+             st.session_state['world_state']=revised
+             try:store.save(revised)
+-            except Exception as exc:st.error(f'소감 저장 실패: {exc}')
++            except Exception as exc:st.session_state['save_error']=str(exc)
+             st.rerun()
+ 
+ def dashboard():
+@@ -193,6 +213,8 @@
+                      '직업':flags.get('career',''),'주거':flags.get('housing',''),
+                      '돌봄':flags.get('care',''),'정책':flags.get('policy',''),
+                      '학습주제수':len(x['concepts']),
++                     '저출산사건':x.get('decisions',{}).get('nursery',{}).get('label','미경험'),
++                     '일손부족사건':x.get('decisions',{}).get('labor',{}).get('label','미경험'),
+                      '재무':flags.get('ret_finance',''),'건강':flags.get('ret_health',''),
+                      '여가':flags.get('ret_leisure',''),'관계':flags.get('ret_social',''),
+                      '소감':x.get('reflection','')})
+--- a/storage.py
++++ b/storage.py
+@@ -3,6 +3,7 @@
+ """
+ from __future__ import annotations
+ import json, os, sqlite3, time
++from contextlib import contextmanager
+ from pathlib import Path
+ from typing import Optional
+ 
+@@ -18,15 +19,23 @@
+         self.path=path or DB_PATH
+         self.path.parent.mkdir(parents=True,exist_ok=True)
+         with self._connection() as db:
++            # WAL lets classroom reads proceed while another student commits.
++            # Keep SQLite's FULL synchronous durability; only the journal changes.
++            db.execute('PRAGMA journal_mode=WAL')
+             db.execute('CREATE TABLE IF NOT EXISTS saves (event_id TEXT PRIMARY KEY, saved_at REAL, class_code TEXT, student_id TEXT, nickname TEXT, run_id TEXT, revision INTEGER, state_json TEXT)')
+             db.execute('CREATE INDEX IF NOT EXISTS by_student ON saves (class_code,student_id,saved_at)')
++    @contextmanager
+     def _connection(self):
+         db=sqlite3.connect(self.path,timeout=10)
+         db.execute('PRAGMA busy_timeout=10000')
+-        return db
++        try:
++            with db:
++                yield db
++        finally:
++            db.close()
+     def load(self,school_class,student_id)->Optional[dict]:
+         with self._connection() as db:
+-            record=db.execute('SELECT state_json FROM saves WHERE class_code=? AND student_id=? ORDER BY saved_at DESC LIMIT 1',(school_class,student_id)).fetchone()
++            record=db.execute('SELECT state_json FROM saves WHERE class_code=? AND student_id=? AND run_id=(SELECT run_id FROM saves WHERE class_code=? AND student_id=? ORDER BY saved_at DESC LIMIT 1) ORDER BY revision DESC LIMIT 1',(school_class,student_id,school_class,student_id)).fetchone()
+         return json.loads(record[0]) if record else None
+     def save(self,state):
+         key=f"{state['run_id']}:{state['revision']}"
+@@ -41,7 +50,9 @@
+         for (raw,) in rows:
+             data=json.loads(raw)
+             key=(data['class_code'],data['student_id'])
+-            unique.setdefault(key,data)
++            previous=unique.get(key)
++            if previous is None or previous['run_id']==data['run_id'] and data['revision']>previous['revision']:
++                unique[key]=data
+         return list(unique.values())
+ 
+ class SheetsStore:
+@@ -57,9 +68,10 @@
+                 self.tab=self.book.worksheet('sewol_port_v1')
+             except gspread.WorksheetNotFound:
+                 self.tab=self.book.add_worksheet('sewol_port_v1',rows=3000,cols=len(HEADERS))
+-            if not self.tab.row_values(1):
++            header=self.tab.row_values(1)
++            if not header:
+                 self.tab.update(range_name='A1:H1',values=[HEADERS],value_input_option='RAW')
+-            elif self.tab.row_values(1)!=HEADERS:
++            elif header!=HEADERS:
+                 raise StorageError('sewol_port_v1 워크시트 헤더가 예상과 다릅니다.')
+         except Exception as ex:
+             raise StorageError(f'Google Sheets 연결 실패: {ex}') from ex
+@@ -71,7 +83,9 @@
+     def load(self,school_class,student_id):
+         candidates=[r for r in self._rows() if r['class_code']==school_class and r['student_id']==student_id]
+         if not candidates:return None
+-        return json.loads(candidates[-1]['state_json'])
++        latest_run=candidates[-1]['run_id']
++        latest=max((r for r in candidates if r['run_id']==latest_run),key=lambda r:int(r['revision']))
++        return json.loads(latest['state_json'])
+     def save(self,state):
+         key=f"{state['run_id']}:{state['revision']}"
+         # Sheets append is not transactional; a student should use one device at a time.
+@@ -87,12 +101,17 @@
+         for row in self._rows():
+             try:
+                 state=json.loads(row['state_json'])
+-                unique[(state['class_code'],state['student_id'])]=state
++                key=(state['class_code'],state['student_id'])
++                previous=unique.get(key)
++                if previous is None or previous['run_id']!=state['run_id'] or state['revision']>=previous['revision']:
++                    unique[key]=state
+             except (KeyError,ValueError,TypeError):
+                 continue
+         return list(unique.values())
+ 
+ def make_store(settings):
++    if bool(settings.get('sheet_id')) != bool(settings.get('gcp_service_account')):
++        raise StorageError('Google Sheets 설정에는 sheet_id와 gcp_service_account가 모두 필요합니다.')
+     if settings.get('sheet_id') and settings.get('gcp_service_account'):
+         return SheetsStore(settings)
+     return LocalStore()

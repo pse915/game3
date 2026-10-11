@@ -1,0 +1,2644 @@
+{
+  "tile_size": 32,
+  "assets": {
+    "school_exterior": {
+      "file": "assets/school_exterior.png",
+      "width": 480,
+      "height": 288,
+      "purpose": "School facade: curved blue metal roof, red brick, grey perpendicular wing, canopied walkway, playground",
+      "source": "3-3game/school.png whole facade",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "school_exterior",
+      "path": "assets/school_exterior.png",
+      "type": "background",
+      "frame_width": 480,
+      "frame_height": 288,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "none",
+      "layer": "background",
+      "anchor": "top-left",
+      "migration_method": "transparent facade resized into existing 480x288 canvas",
+      "sha256": "f2de0cfa988b838c4bbb65d835e0df20095702b25aab1705a20716dbb850850b"
+    },
+    "school_hall_1": {
+      "file": "assets/school_hall_1.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired L-shaped school corridor 1: cream walls, timber mullions, terrazzo and magenta arches",
+      "source": "3-3game/terrain.png; details.png; furniture.png; environment.png (floor 1)",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "school_hall_1",
+      "path": "assets/school_hall_1.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "none",
+      "layer": "background",
+      "anchor": "top-left",
+      "migration_method": "composite corridor from donor textures and sprites",
+      "sha256": "da0b96eda53987c56c9c4dc55212468e5663cc90693abfe3173c823478ebc5f2"
+    },
+    "school_hall_2": {
+      "file": "assets/school_hall_2.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired L-shaped school corridor 2: cream walls, timber mullions, terrazzo and magenta arches",
+      "source": "3-3game/terrain.png; details.png; furniture.png; environment.png (floor 2)",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "school_hall_2",
+      "path": "assets/school_hall_2.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "none",
+      "layer": "background",
+      "anchor": "top-left",
+      "migration_method": "composite corridor from donor textures and sprites",
+      "sha256": "da0b96eda53987c56c9c4dc55212468e5663cc90693abfe3173c823478ebc5f2"
+    },
+    "school_hall_3": {
+      "file": "assets/school_hall_3.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired L-shaped school corridor 3: cream walls, timber mullions, terrazzo and magenta arches",
+      "source": "3-3game/terrain.png; details.png; furniture.png; environment.png (floor 3)",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "school_hall_3",
+      "path": "assets/school_hall_3.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "none",
+      "layer": "background",
+      "anchor": "top-left",
+      "migration_method": "composite corridor from donor textures and sprites",
+      "sha256": "da0b96eda53987c56c9c4dc55212468e5663cc90693abfe3173c823478ebc5f2"
+    },
+    "school_hall_4": {
+      "file": "assets/school_hall_4.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired L-shaped school corridor 4: cream walls, timber mullions, terrazzo and magenta arches",
+      "source": "3-3game/terrain.png; details.png; furniture.png; environment.png (floor 4)",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "school_hall_4",
+      "path": "assets/school_hall_4.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "none",
+      "layer": "background",
+      "anchor": "top-left",
+      "migration_method": "composite corridor from donor textures and sprites",
+      "sha256": "da0b96eda53987c56c9c4dc55212468e5663cc90693abfe3173c823478ebc5f2"
+    },
+    "school_classroom": {
+      "file": "assets/school_classroom.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photograph-informed classroom: blue chairs, off-white desks, grey frames, cabinets, roller blinds",
+      "source": "3-3game/terrain.png; environment.png; furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "school_classroom",
+      "path": "assets/school_classroom.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "none",
+      "layer": "background",
+      "anchor": "top-left",
+      "migration_method": "donor-composited classroom",
+      "sha256": "648d4a2f843b8d84bfa982b3d3de2730713901766c682a6f0afd6f20822df549"
+    },
+    "teacher_00": {
+      "file": "assets/teacher_00.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=0",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_00",
+      "path": "assets/teacher_00.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "5ebc441ef836dd506a11272822881bbe64fea0904c93a3f5bfc032df549ed72b"
+    },
+    "teacher_01": {
+      "file": "assets/teacher_01.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=1",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_01",
+      "path": "assets/teacher_01.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "b2b9f3573f0e04e4a242a4f296193376448f2ca3637e96d6a67a958cd517fb6a"
+    },
+    "teacher_02": {
+      "file": "assets/teacher_02.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=2",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_02",
+      "path": "assets/teacher_02.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "000c117530ead76d534958fe040d78d1c506714e129671ef94ab97c8ed5724ba"
+    },
+    "teacher_03": {
+      "file": "assets/teacher_03.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=3",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_03",
+      "path": "assets/teacher_03.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "b334bcadffe1be6cba5a412ddfa8f961e90b31d7f99c17b459e9b9f43d10ce29"
+    },
+    "teacher_04": {
+      "file": "assets/teacher_04.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=4",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_04",
+      "path": "assets/teacher_04.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "740f214275cf735dd6ae3b9a8f61ad6e076861fd42acc2ea2473491de05dc8aa"
+    },
+    "teacher_05": {
+      "file": "assets/teacher_05.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=5",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_05",
+      "path": "assets/teacher_05.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "a1ff4e9437900a101a1c017b6077a40b30fca080c1e48e89a10083757cadeeaa"
+    },
+    "teacher_06": {
+      "file": "assets/teacher_06.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=6",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_06",
+      "path": "assets/teacher_06.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "8e607ad9cccfaf4f27c29b2bae107c2e393244adb9ba0a7251c1045aaa971b38"
+    },
+    "teacher_07": {
+      "file": "assets/teacher_07.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=7",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_07",
+      "path": "assets/teacher_07.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "60805c2cdbf3f7aa6125b9acdfc564599323a66af422fbd2bba567d8526d8299"
+    },
+    "teacher_08": {
+      "file": "assets/teacher_08.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=8",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_08",
+      "path": "assets/teacher_08.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "fcdec7dff1688999fda16be020ca40a43d6538e2964a59bffaa9f9ca12b71215"
+    },
+    "teacher_09": {
+      "file": "assets/teacher_09.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=9",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_09",
+      "path": "assets/teacher_09.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "2483c6e702cf8a1d0cdcf1f1801478dc4f5b3a5e5f01bc61e47898dcff95e095"
+    },
+    "teacher_10": {
+      "file": "assets/teacher_10.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=10",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_10",
+      "path": "assets/teacher_10.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "fa83960d5a80fc6158c2483ae997d671e1c7b53d5dd40e171dba6fe74568609f"
+    },
+    "teacher_11": {
+      "file": "assets/teacher_11.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=11",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_11",
+      "path": "assets/teacher_11.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "7b747e8ce7739ceac9f2e7e3edb27e5deb86fe0fcd19590ca6d9a7b8149fa68a"
+    },
+    "teacher_12": {
+      "file": "assets/teacher_12.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=12",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_12",
+      "path": "assets/teacher_12.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "b3272d2be1eae8002daea164a4db6dfea66868c6d3b1915927a6e4d9fb681a71"
+    },
+    "teacher_13": {
+      "file": "assets/teacher_13.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=13",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_13",
+      "path": "assets/teacher_13.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "2c57e14bd7d2bf7a774fb3363adebe34800835050e9b20e5fa58518750f5e7a8"
+    },
+    "teacher_14": {
+      "file": "assets/teacher_14.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=14",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_14",
+      "path": "assets/teacher_14.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "c63880e855641d80f233bfd50c8d111bc80b5c97074663a4d4eebcbe60d77c5c"
+    },
+    "teacher_15": {
+      "file": "assets/teacher_15.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=15",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_15",
+      "path": "assets/teacher_15.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "72b332bf4b1f5468d6ccca0ef1f4a01df76dde69d5c90c8660f5280b726b6f26"
+    },
+    "teacher_16": {
+      "file": "assets/teacher_16.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite with directional walking animation",
+      "source": "3-3game/npcs.png front-only variant=16",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "teacher_16",
+      "path": "assets/teacher_16.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "bbe6565771e4a9bf0d11c8afbaf9b040009cfde2503d3fbb1cd7b661eff6975a"
+    },
+    "teacher_17": {
+      "file": "assets/teacher_17.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite 17, 4 directions x 4 walking frames",
+      "source": "3-3game/npcs.png front-only variant=17",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "teacher_17",
+      "path": "assets/teacher_17.png",
+      "type": "sprite_sheet",
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "ec3fd217a33bd903e74f9672546d910fd2048f7d5c0b2d4bef35d70912ff8b25"
+    },
+    "teacher_18": {
+      "file": "assets/teacher_18.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original teacher sprite 18, 4 directions x 4 walking frames",
+      "source": "3-3game/npcs.png front-only variant=18",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "teacher_18",
+      "path": "assets/teacher_18.png",
+      "type": "sprite_sheet",
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "front-idle adaptation; side/back approximate",
+      "sha256": "7b6aa52e011f31b93d7ba7fdb4c7f6066733a2db99b761a758b9501bbdee7fec"
+    },
+    "interior_bread": {
+      "file": "assets/interior_bread.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "빵집 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; environment.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_bread",
+      "path": "assets/interior_bread.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "39b1479444658ab3e61e91716e1323d8a91bafecd8cb83e26b9a6d808860857d"
+    },
+    "interior_cafe": {
+      "file": "assets/interior_cafe.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "카페 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; environment.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_cafe",
+      "path": "assets/interior_cafe.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "7746f247a6420bd595b5af5a833abac549b1fafb713c908a52b8580db7597ae8"
+    },
+    "interior_closed": {
+      "file": "assets/interior_closed.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "새로운 공간 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; details.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_closed",
+      "path": "assets/interior_closed.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "cf21f29a16ae74be84a4ba30ccff1ac8d9a725ed4fe542d87abaea397e02c720"
+    },
+    "interior_hall": {
+      "file": "assets/interior_hall.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "마을회관 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; environment.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_hall",
+      "path": "assets/interior_hall.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "8a573d370809f1b1cdf3e27fae95df6ec376643d13f47a0a8ab8649f35e028f1"
+    },
+    "interior_library": {
+      "file": "assets/interior_library.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "도서관 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; details.png, environment.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_library",
+      "path": "assets/interior_library.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "8e4070fe90335f882035d4015b86f099f76779af4d6b256064507bd2e42c4b4d"
+    },
+    "interior_factory": {
+      "file": "assets/interior_factory.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "공방 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; details.png, facilities.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_factory",
+      "path": "assets/interior_factory.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "c106594a3afcab44a116ebb04303200bada543549186927cec2da6ba82fae0a9"
+    },
+    "interior_office": {
+      "file": "assets/interior_office.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "사무실 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; environment.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_office",
+      "path": "assets/interior_office.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "8a573d370809f1b1cdf3e27fae95df6ec376643d13f47a0a8ab8649f35e028f1"
+    },
+    "interior_home": {
+      "file": "assets/interior_home.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "공동주거 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_home",
+      "path": "assets/interior_home.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "e0a9a04b6a7d9850bbc613cf6c8a7ee5b1ce6a0fe0ffdfc849a58e0fb779371e"
+    },
+    "interior_house": {
+      "file": "assets/interior_house.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "주거공간 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_house",
+      "path": "assets/interior_house.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "adc640743e1819d03233f74fef341b03d2ff591a0dbb00c75e2c0e44659bd530"
+    },
+    "interior_clinic": {
+      "file": "assets/interior_clinic.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "보건시설 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; details.png, facilities.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_clinic",
+      "path": "assets/interior_clinic.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "0862a3d42d60a0c68769ee325f67a0dda89f5dce3edaf809582fa441f7a1a4cb"
+    },
+    "interior_care": {
+      "file": "assets/interior_care.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "돌봄공간 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; details.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_care",
+      "path": "assets/interior_care.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "3ebcc7b496339413298eaf64f31f75bd16fea82fcc97ffdeee7cdc3bc31a14a9"
+    },
+    "interior_school": {
+      "file": "assets/interior_school.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "배움공간 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; environment.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_school",
+      "path": "assets/interior_school.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "767faebaf0ae66c9a4ae2b6b8ce1359780fd0f5f3751a810ddefb9534fc13fd6"
+    },
+    "interior_theater": {
+      "file": "assets/interior_theater.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "극장 distinctive photo-inspired RPG interior",
+      "source": "3-3game/terrain.png; furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "asset_id": "interior_theater",
+      "path": "assets/interior_theater.png",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited interior",
+      "sha256": "ab9769497e60e1c8b9580817ce94a5b986828004e3f39c6cfb23060bd88be693"
+    },
+    "building_cafe": {
+      "file": "assets/building_cafe.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "cafe uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 0",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_cafe",
+      "path": "assets/building_cafe.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "e51798158f1f6d68be0b4e4305b7bd727ada56f663f8f003c0c7787440601dec"
+    },
+    "building_bread": {
+      "file": "assets/building_bread.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "bread uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 10",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_bread",
+      "path": "assets/building_bread.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "c39ca9a8b6582961440caa50f2cb6af4fc8667a131be08b38156b8eed0ecbf0c"
+    },
+    "building_hall": {
+      "file": "assets/building_hall.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "hall uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 6",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_hall",
+      "path": "assets/building_hall.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "f5a48dd3c9a7106c993416bef82f18bda731632274e525077491e23f96e1a4dc"
+    },
+    "building_office": {
+      "file": "assets/building_office.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "office uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 2",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_office",
+      "path": "assets/building_office.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "de5533e42284fcec0ce997438d0b1ae3a14e303ff45ceb4dd1c95f1b614ee6ae"
+    },
+    "building_home": {
+      "file": "assets/building_home.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "home uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 1",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_home",
+      "path": "assets/building_home.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "493ee762676b87a441881b65f908d99551197cd4d05eace81bf647cde2854f7c"
+    },
+    "building_house": {
+      "file": "assets/building_house.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "house uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 3",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_house",
+      "path": "assets/building_house.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "23d0ebe75394c1a9fee29fa15699662c3ade33c126f88e6172c5352f31b4dd58"
+    },
+    "building_clinic": {
+      "file": "assets/building_clinic.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "clinic uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 8",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_clinic",
+      "path": "assets/building_clinic.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "4f9b322a328941d508ce0c57914aa04558d8ce93878404132e403f2b696cdbd4"
+    },
+    "building_care": {
+      "file": "assets/building_care.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "care uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 7",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_care",
+      "path": "assets/building_care.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "b7cabb2cb4046c43c48a56ab2a62057032116aa900656be757ea548b07c15659"
+    },
+    "building_factory": {
+      "file": "assets/building_factory.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "factory uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 12",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_factory",
+      "path": "assets/building_factory.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "36dc799a4895cad685723586eb28358f836f88a78e556a7d18e2660ef4f52ade"
+    },
+    "building_closed": {
+      "file": "assets/building_closed.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "closed uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 13",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_closed",
+      "path": "assets/building_closed.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "2562726d79505038ce2f8154ef347193316210b6731e17d8386ce4454be4ead2"
+    },
+    "building_library": {
+      "file": "assets/building_library.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "library uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 9",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_library",
+      "path": "assets/building_library.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "cad14eed8f17fb56a32606f0813ce9fa4be0ad5f0348d54c1c204885d5d880d5"
+    },
+    "building_school": {
+      "file": "assets/building_school.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "school uniquely shaped town building sprite",
+      "source": "3-3game/school.png whole school facade",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_school",
+      "path": "assets/building_school.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "ce69162868b05aa8d726b644572d5bdeb2ca3b26100f4a43a30af139cf396120"
+    },
+    "building_theater": {
+      "file": "assets/building_theater.png",
+      "width": 320,
+      "height": 232,
+      "purpose": "theater uniquely shaped town building sprite",
+      "source": "3-3game/buildings.png cell 5",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "building_theater",
+      "path": "assets/building_theater.png",
+      "type": "object",
+      "frame_width": 320,
+      "frame_height": 232,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "buildings",
+      "anchor": "bottom-center",
+      "migration_method": "alpha-trim + nearest-neighbor scale",
+      "sha256": "8ba1cd1baf1554e67e05a1c3df646d46e9ac43cb880a5760ac138daf0b278963"
+    },
+    "tree_0": {
+      "file": "assets/tree_0.png",
+      "width": 76,
+      "height": 94,
+      "purpose": "Detailed town tree canopy and trunk",
+      "source": "3-3game/environment.png cell 0",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "tree_0",
+      "path": "assets/tree_0.png",
+      "type": "object",
+      "frame_width": 76,
+      "frame_height": 94,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "none",
+      "layer": "background",
+      "anchor": "bottom-center",
+      "migration_method": "scaled tree sprite",
+      "sha256": "34016c54e68ee18c2f6eb130d81fbaebd95b5dff69b89050102ea207c7e7400c"
+    },
+    "tree_1": {
+      "file": "assets/tree_1.png",
+      "width": 76,
+      "height": 94,
+      "purpose": "Detailed town tree canopy and trunk",
+      "source": "3-3game/environment.png cell 1",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "tree_1",
+      "path": "assets/tree_1.png",
+      "type": "object",
+      "frame_width": 76,
+      "frame_height": 94,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "none",
+      "layer": "background",
+      "anchor": "bottom-center",
+      "migration_method": "scaled tree sprite",
+      "sha256": "ff6f5906dcffdc85a4acad7069617cc634f685930f25134acb3e79a465b0efce"
+    },
+    "tree_2": {
+      "file": "assets/tree_2.png",
+      "width": 76,
+      "height": 94,
+      "purpose": "Detailed town tree canopy and trunk",
+      "source": "3-3game/environment.png cell 0",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "asset_id": "tree_2",
+      "path": "assets/tree_2.png",
+      "type": "object",
+      "frame_width": 76,
+      "frame_height": 94,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "none",
+      "layer": "background",
+      "anchor": "bottom-center",
+      "migration_method": "scaled tree sprite",
+      "sha256": "68c39dc7752e7f73c77f32b31091f3d199e13c6a2b2b20cf0dc7e65af8042101"
+    },
+    "avatar_0": {
+      "file": "assets/avatar_0.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original 4-direction, 4-frame player animation",
+      "source": "3-3game/avatars.png avatar=0 cols=0..3",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "avatar_0",
+      "path": "assets/avatar_0.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "original 4-direction 16-frame sprite crop",
+      "sha256": "30a57c10cde129d68127bf8c462afaa9237b6a1c511676b32380c480d189164c"
+    },
+    "avatar_1": {
+      "file": "assets/avatar_1.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original 4-direction, 4-frame player animation",
+      "source": "3-3game/avatars.png avatar=1 cols=0..3",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "avatar_1",
+      "path": "assets/avatar_1.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "original 4-direction 16-frame sprite crop",
+      "sha256": "a81f5403f335a6921a8946416e7458f10e8c764c69d83708593522e53ea0c98c"
+    },
+    "avatar_2": {
+      "file": "assets/avatar_2.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original 4-direction, 4-frame player animation",
+      "source": "3-3game/avatars.png avatar=2 cols=0..3",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "avatar_2",
+      "path": "assets/avatar_2.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "original 4-direction 16-frame sprite crop",
+      "sha256": "ca5741b922af6f5edf51247ded5f3ad81d52ddb921f519a747023011fa8202a0"
+    },
+    "avatar_3": {
+      "file": "assets/avatar_3.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original 4-direction, 4-frame player animation",
+      "source": "3-3game/avatars.png avatar=3 cols=0..3",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "avatar_3",
+      "path": "assets/avatar_3.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "original 4-direction 16-frame sprite crop",
+      "sha256": "698bd66f16fa8fb154e59a4e3a698adc24a6f8679a7976e8b54db6d76731fee4"
+    },
+    "avatar_4": {
+      "file": "assets/avatar_4.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original 4-direction, 4-frame player animation",
+      "source": "3-3game/avatars.png avatar=4 cols=0..3",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "avatar_4",
+      "path": "assets/avatar_4.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "original 4-direction 16-frame sprite crop",
+      "sha256": "f0d43fd16ec3e6fe545060c3217986d3b7e72873a03e97c02c1a54297f21ae62"
+    },
+    "avatar_5": {
+      "file": "assets/avatar_5.png",
+      "width": 128,
+      "height": 192,
+      "purpose": "Original 4-direction, 4-frame player animation",
+      "source": "3-3game/avatars.png avatar=5 cols=0..3",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "pixel_scale": 1,
+      "frame_width": 32,
+      "frame_height": 48,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "asset_id": "avatar_5",
+      "path": "assets/avatar_5.png",
+      "type": "sprite_sheet",
+      "animation": {
+        "down": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "left": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "right": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "up": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "collision": "none",
+      "layer": "entities",
+      "anchor": "feet",
+      "migration_method": "original 4-direction 16-frame sprite crop",
+      "sha256": "7b965ffdb058e35bb8e449327be046af30ea9a6891af8d18b30a789891a9e7c4"
+    },
+    "school_room_science": {
+      "asset_id": "school_room_science",
+      "path": "assets/school_room_science.png",
+      "file": "assets/school_room_science.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired playable cutaway science classroom",
+      "source": "3-3game/terrain.png; details.png, environment.png, facilities.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited special room",
+      "sha256": "9765451c2cf0480973327cd208b6ef4a3d6d02ce31e49ea284181fa1be36b590"
+    },
+    "school_room_technology": {
+      "asset_id": "school_room_technology",
+      "path": "assets/school_room_technology.png",
+      "file": "assets/school_room_technology.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired playable cutaway technology classroom",
+      "source": "3-3game/terrain.png; details.png, environment.png, facilities.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited special room",
+      "sha256": "3198a076eaa81977c7dd49d2b51d4a4944a917792f698bf2719d9e91552b2115"
+    },
+    "school_room_homemaking": {
+      "asset_id": "school_room_homemaking",
+      "path": "assets/school_room_homemaking.png",
+      "file": "assets/school_room_homemaking.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired playable cutaway homemaking classroom",
+      "source": "3-3game/terrain.png; facilities.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited special room",
+      "sha256": "0f6c695d3708701b652a12d778c1bac634e850cf80e5fda356a436a3512770de"
+    },
+    "school_room_computer": {
+      "asset_id": "school_room_computer",
+      "path": "assets/school_room_computer.png",
+      "file": "assets/school_room_computer.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired playable cutaway computer classroom",
+      "source": "3-3game/terrain.png; environment.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited special room",
+      "sha256": "c138402a95e6c4f263d7b641109d7b227484b3183f3e54e3c4e3232da9b3300a"
+    },
+    "school_room_music": {
+      "asset_id": "school_room_music",
+      "path": "assets/school_room_music.png",
+      "file": "assets/school_room_music.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired playable cutaway music classroom",
+      "source": "3-3game/terrain.png; facilities.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited special room",
+      "sha256": "09a54b72dad2152dbea24b52e327509c17c216bd8b4ce77588d5e18ded950c60"
+    },
+    "school_room_art": {
+      "asset_id": "school_room_art",
+      "path": "assets/school_room_art.png",
+      "file": "assets/school_room_art.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired playable cutaway art classroom",
+      "source": "3-3game/terrain.png; furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited special room",
+      "sha256": "d4debb16714663ec398b49e38585934b5622eb9ebbf4991dbd9cec96a60e6d69"
+    },
+    "school_room_health": {
+      "asset_id": "school_room_health",
+      "path": "assets/school_room_health.png",
+      "file": "assets/school_room_health.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired playable cutaway health classroom",
+      "source": "3-3game/terrain.png; details.png, facilities.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited special room",
+      "sha256": "cbf806e2890af63033151d0b329d9e528c4e7a843f45580634912a21f9b74cf3"
+    },
+    "school_room_library": {
+      "asset_id": "school_room_library",
+      "path": "assets/school_room_library.png",
+      "file": "assets/school_room_library.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired playable cutaway library classroom",
+      "source": "3-3game/terrain.png; details.png, environment.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited special room",
+      "sha256": "8e4070fe90335f882035d4015b86f099f76779af4d6b256064507bd2e42c4b4d"
+    },
+    "school_room_counsel": {
+      "asset_id": "school_room_counsel",
+      "path": "assets/school_room_counsel.png",
+      "file": "assets/school_room_counsel.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired playable cutaway counsel classroom",
+      "source": "3-3game/terrain.png; details.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited special room",
+      "sha256": "d86d8384590daabbafd2825ac8fff316338efaf5cc55480ec4f9e0d4ab711fa8"
+    },
+    "school_room_office": {
+      "asset_id": "school_room_office",
+      "path": "assets/school_room_office.png",
+      "file": "assets/school_room_office.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired playable cutaway office classroom",
+      "source": "3-3game/terrain.png; environment.png, furniture.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited special room",
+      "sha256": "8a573d370809f1b1cdf3e27fae95df6ec376643d13f47a0a8ab8649f35e028f1"
+    },
+    "school_room_gym": {
+      "asset_id": "school_room_gym",
+      "path": "assets/school_room_gym.png",
+      "file": "assets/school_room_gym.png",
+      "width": 960,
+      "height": 608,
+      "purpose": "Photo-inspired playable cutaway gym classroom",
+      "source": "3-3game/terrain.png; details.png, facilities.png",
+      "license": "Imported from user-provided 3-3game repository; original licensing must be verified for redistribution",
+      "type": "background",
+      "frame_width": 960,
+      "frame_height": 608,
+      "frames": [
+        0
+      ],
+      "animation": {},
+      "collision": "separate_map",
+      "layer": "background",
+      "anchor": "top-left",
+      "pixel_scale": 1,
+      "migration_method": "donor-composited special room",
+      "sha256": "1d0687999ed5f941f54fb1010dc8b274d3a2d92b8d1f1ba9d3919a70dcf130ce"
+    }
+  },
+  "migration": {
+    "donor": "https://github.com/pse915/3-3game",
+    "generated_file_count": 71,
+    "strategy": "Preserve game2 stable image dimensions/IDs and replace all active visual sources",
+    "license_note": "Verify donor asset rights before public redistribution"
+  }
+}

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>미래마을 2.0 | 시간을 걷는 생애설계 RPG</title><link rel="stylesheet" href="style.css"></head>
+<body><main id="game">
+<header class="game-header"><div><span class="tag">FUTURE VILLAGE · CHAPTER RPG</span><h1 id="place">미래마을에 도착하는 중...</h1></div><div class="age-token"><span id="period">나의 여정</span><b id="age">15세</b></div></header>
+<div class="quest"><div class="quest-caption">✦ 지금 해야 할 일 <span id="progress">0% 진행</span></div><strong id="objective">주민을 만나 봐요.</strong><div class="quest-sub"><span id="badges"></span><span id="world-phase"></span></div></div>
+<div id="stage" tabindex="0" aria-label="탑다운 픽셀 RPG 지도. 방향키나 WASD로 이동하고 Enter로 대화, 스페이스로 현장을 조사합니다.">
+<canvas id="world" width="768" height="480" aria-label="직접 탐험하는 24×15 타일 픽셀 미래마을 지도"></canvas>
+<div id="maplabel">← → 방향키 · Enter 대화 · Space 조사</div><div id="route" aria-live="off"></div><div id="hint" aria-live="polite"></div>
+<div id="timeline" class="hidden" aria-live="polite"><div class="timeline-card"><span>THE YEARS PASS</span><b id="timeline-title"></b><p id="timeline-desc"></p><button id="skiptravel">건너뛰기</button></div></div>
+<div id="modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="dialogtitle"><section id="dialog"></section></div>
+</div>
+<div id="controls"><div class="pad" aria-label="이동 방향 버튼"><button data-dir="up" class="up" aria-label="위">▲</button><button data-dir="left" class="left" aria-label="왼쪽">◀</button><button data-dir="down" class="down" aria-label="아래">▼</button><button data-dir="right" class="right" aria-label="오른쪽">▶</button></div>
+<div class="actions"><button id="talk" class="primary action-main">💬 말걸기</button><button id="inspect" class="investigate action-main">🔎 조사하기</button><button id="life">📜 생애설계</button><button id="policy">🏛 정책회의</button><button id="book">📖 도감</button><button id="classroom">20분 모드</button><button id="save">저장</button><button id="sound">🔇 소리</button><button id="full">⛶ 전체화면</button></div></div>
+<details class="stats-panel"><summary>마을 수치와 탐험 기록 보기 <span class="simulation">교육용 가상 시뮬레이션</span></summary><div id="hud" aria-label="마을의 현재 지표"></div></details>
+<footer id="status" aria-live="polite">방향키로 이동하고 반짝이는 단서를 살펴보세요.</footer>
+</main><script src="game.js"></script></body></html>

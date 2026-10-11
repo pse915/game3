@@ -1,0 +1,317 @@
+[
+  {
+    "event_id": "career",
+    "title": "사라진 구인 공고",
+    "stages": [
+      0
+    ],
+    "required_in": [
+      0
+    ],
+    "npc_ids": [
+      "seon"
+    ],
+    "choices": [
+      "stable",
+      "flex",
+      "venture",
+      "service"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "housing",
+    "title": "새집을 찾아서",
+    "stages": [
+      0
+    ],
+    "required_in": [
+      0
+    ],
+    "npc_ids": [
+      "mira"
+    ],
+    "choices": [
+      "rent",
+      "share",
+      "house"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "shop",
+    "title": "카페에 사람이 없다",
+    "stages": [
+      0,
+      1
+    ],
+    "required_in": [],
+    "npc_ids": [
+      "jiho"
+    ],
+    "choices": [
+      "help",
+      "talk",
+      "route"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "young",
+    "title": "떠나는 친구의 편지",
+    "stages": [
+      0,
+      1
+    ],
+    "required_in": [],
+    "npc_ids": [
+      "nari"
+    ],
+    "choices": [
+      "job",
+      "home",
+      "listen"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "care",
+    "title": "비어 버린 돌봄 시간표",
+    "stages": [
+      1,
+      2
+    ],
+    "required_in": [
+      1
+    ],
+    "npc_ids": [
+      "yeon"
+    ],
+    "choices": [
+      "share",
+      "flex",
+      "service"
+    ],
+    "learning_goals": [
+      "aging",
+      "elder_care",
+      "workcare"
+    ]
+  },
+  {
+    "event_id": "worklife",
+    "title": "불이 켜진 빈 사무실",
+    "stages": [
+      1
+    ],
+    "required_in": [],
+    "npc_ids": [
+      "hyeon"
+    ],
+    "choices": [
+      "hours",
+      "equal",
+      "support"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "nursery",
+    "title": "아이들이 줄어든 마을",
+    "stages": [
+      1,
+      2
+    ],
+    "required_in": [
+      1
+    ],
+    "npc_ids": [
+      "boram"
+    ],
+    "choices": [
+      "together",
+      "retrain",
+      "expense"
+    ],
+    "learning_goals": [
+      "low_birth",
+      "education_cost",
+      "housing",
+      "employment"
+    ]
+  },
+  {
+    "event_id": "labor",
+    "title": "닫힌 빵집의 셔터",
+    "stages": [
+      1,
+      2
+    ],
+    "required_in": [
+      1
+    ],
+    "npc_ids": [
+      "dojun"
+    ],
+    "choices": [
+      "retrain",
+      "hire",
+      "rest"
+    ],
+    "learning_goals": [
+      "aging",
+      "labor",
+      "generations"
+    ]
+  },
+  {
+    "event_id": "policy",
+    "title": "마을 협의회의 네 가지 예산안",
+    "stages": [
+      1
+    ],
+    "required_in": [
+      1
+    ],
+    "npc_ids": [
+      "mayor"
+    ],
+    "choices": [
+      "youth",
+      "balance",
+      "aging",
+      "together"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "generation",
+    "title": "강가의 낡은 작업대",
+    "stages": [
+      1,
+      2
+    ],
+    "required_in": [],
+    "npc_ids": [
+      "grand"
+    ],
+    "choices": [
+      "teach",
+      "safe",
+      "listen"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "garden",
+    "title": "세대가 함께 가꾸는 작은 정원",
+    "stages": [
+      1,
+      2
+    ],
+    "required_in": [],
+    "npc_ids": [
+      "garden"
+    ],
+    "choices": [
+      "layout",
+      "grow",
+      "share"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "festival",
+    "title": "다른 세대가 함께 만드는 축제",
+    "stages": [
+      1,
+      2
+    ],
+    "required_in": [],
+    "npc_ids": [
+      "festival"
+    ],
+    "choices": [
+      "access",
+      "safe",
+      "teach"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "ret_finance",
+    "title": "노후의 돈, 선택의 여지",
+    "stages": [
+      2
+    ],
+    "required_in": [
+      2
+    ],
+    "npc_ids": [
+      "bank"
+    ],
+    "choices": [
+      "budget",
+      "pension",
+      "learn"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "ret_health",
+    "title": "무리하지 않는 하루",
+    "stages": [
+      2
+    ],
+    "required_in": [
+      2
+    ],
+    "npc_ids": [
+      "doctor"
+    ],
+    "choices": [
+      "walk",
+      "check",
+      "share"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "ret_leisure",
+    "title": "다시 켜진 작은 극장",
+    "stages": [
+      2
+    ],
+    "required_in": [
+      2
+    ],
+    "npc_ids": [
+      "artist"
+    ],
+    "choices": [
+      "arts",
+      "garden",
+      "teach"
+    ],
+    "learning_goals": []
+  },
+  {
+    "event_id": "ret_social",
+    "title": "오래된 친구의 빈 의자",
+    "stages": [
+      2
+    ],
+    "required_in": [
+      2
+    ],
+    "npc_ids": [
+      "neighbor"
+    ],
+    "choices": [
+      "friends",
+      "join",
+      "mentor"
+    ],
+    "learning_goals": []
+  }
+]
